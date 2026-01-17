@@ -320,42 +320,43 @@ struct NDArray[dtype: DType = DType.float64](
     # for creating views (unsafe!)
     # TODO: temporarily disabled this constructor until we setup views for NDArray.
     # fn __init__[is_mutable: Bool, //, view_origin: Origin[mut=is_mutable]](
-    #     out self,
-    #     shape: NDArrayShape,
-    #     ref buffer: LegacyUnsafePointer[Scalar[Self.dtype], origin=view_origin],
-    #     offset: Int,
-    #     strides: NDArrayStrides,
-    # ) raises:
-    #     """
-    #     Initialize a NDArray view with explicit shape, raw buffers, offset, and strides.
+    fn __init__(
+        out self,
+        shape: NDArrayShape,
+        ref buffer: UnsafePointer[Scalar[Self.dtype], origin=MutExternalOrigin],
+        offset: Int,
+        strides: NDArrayStrides,
+    ) raises :
+        """
+        Initialize a NDArray view with explicit shape, raw buffers, offset, and strides.
 
-    #     This constructor creates a view over existing memory buffers for the real and imaginary parts,
-    #     using the provided shape, offset, and stride information. It is intended for advanced or internal
-    #     use cases where direct control over memory layout is required.
+        This constructor creates a view over existing memory buffers for the real and imaginary parts,
+        using the provided shape, offset, and stride information. It is intended for advanced or internal
+        use cases where direct control over memory layout is required.
 
-    #     ***Unsafe!*** This function is unsafe and should only be used internally. The caller is responsible
-    #     for ensuring that the buffers are valid and that the shape, offset, and strides are consistent.
+        ***Unsafe!*** This function is unsafe and should only be used internally. The caller is responsible
+        for ensuring that the buffers are valid and that the shape, offset, and strides are consistent.
 
-    #     Args:
-    #         shape: NDArrayShape specifying the dimensions of the array.
-    #         buffer: Unsafe pointer to the buffer containing the real part data.
-    #         offset: Integer offset into the buffers.
-    #         strides: NDArrayStrides specifying the stride for each dimension.
+        Args:
+            shape: NDArrayShape specifying the dimensions of the array.
+            buffer: Unsafe pointer to the buffer containing the real part data.
+            offset: Integer offset into the buffers.
+            strides: NDArrayStrides specifying the stride for each dimension.
 
-    #     Notes:
-    #         - No validation is performed on the buffers or metadata.
-    #         - The resulting NDArray shares memory with the provided buffers.
-    #         - Incorrect usage may lead to undefined behavior.
-    #     """
-    #     self.shape = shape
-    #     self.strides = strides
-    #     self.ndim = self.shape.ndim
-    #     self.size = self.shape.size_of_array()
-    #     self._buf = DataContainer(ptr=buffer.offset(offset))
-    #     self.flags = Flags(
-    #         self.shape, self.strides, owndata=False, writeable=False
-    #     )
-    #     self.print_options = PrintOptions()
+        Notes:
+            - No validation is performed on the buffers or metadata.
+            - The resulting NDArray shares memory with the provided buffers.
+            - Incorrect usage may lead to undefined behavior.
+        """
+        self.shape = shape
+        self.strides = strides
+        self.ndim = self.shape.ndim
+        self.size = self.shape.size_of_array()
+        self._buf = DataContainer(ptr=buffer + offset)
+        self.flags = Flags(
+            self.shape, self.strides, owndata=False, writeable=False
+        )
+        self.print_options = PrintOptions()
 
     @always_inline("nodebug")
     fn __copyinit__(out self, other: Self):

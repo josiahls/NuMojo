@@ -10,7 +10,7 @@ from memory import UnsafePointer, LegacyUnsafePointer
 
 
 # temporary DataContainer to support transition from LegacyUnsafePointer to UnsafePointer.
-struct DataContainer[dtype: DType, origin: MutOrigin](ImplicitlyCopyable):
+struct DataContainerNew[mut: Bool, //, dtype: DType, origin: Origin[mut=mut]](ImplicitlyCopyable):
     """
     DataContainer is managing a contiguous block of memory containing elements of type `Scalar[dtype]`, using an `UnsafePointer` with a specified mutability origin. It provides basic memory management and pointer access for low-level array operations.
 
@@ -30,9 +30,13 @@ struct DataContainer[dtype: DType, origin: MutOrigin](ImplicitlyCopyable):
         `ndarray.flags['OWN_DATA']` should be set as True.
         The memory should be freed by `__del__`.
         """
-        self.ptr: UnsafePointer[Scalar[Self.dtype], Self.origin] = alloc[
-            Scalar[Self.dtype]
-        ](size).unsafe_origin_cast[Self.origin]()
+        # alloc returns MutOrigin.external, so we need to cast mutability first,
+        # then cast to the struct's origin. This pattern matches stdlib usage.
+        self.ptr = (
+            alloc[Scalar[Self.dtype]](size)
+            .unsafe_mut_cast[Self.mut]()
+            .unsafe_origin_cast[Self.origin]()
+        )
 
     fn __init__(out self, ptr: UnsafePointer[Scalar[Self.dtype], Self.origin]):
         """
