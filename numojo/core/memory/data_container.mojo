@@ -136,3 +136,6 @@ struct DataContainerNew[mut: Bool, //, dtype: DType, origin: Origin[mut=mut]](Im
             value: Value to store.
         """
         self.ptr.store[width=width](offset, value)
+
+
+comptime DataContainer = DataContainerNew
