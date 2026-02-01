@@ -119,7 +119,7 @@ fn log2[
 
 fn log10[
     dtype: DType, backend: _mf.Backend = _mf.Vectorized
-](array: NDArray[dtype]) raises -> NDArray[dtype]:
+](array: NDArray[dtype]) raises -> NDArray[dtype] where dtype.is_floating_point():
     """
     Element-wise logarithm base ten of NDArray.
 

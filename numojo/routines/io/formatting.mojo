@@ -212,7 +212,7 @@ fn format_floating_scientific[
     suppress_scientific: Bool = False,
     exponent_threshold: Int = 4,
     formatted_width: Int = 8,
-) raises -> String:
+) raises -> String where dtype.is_floating_point():
     """
     Format a float in scientific notation.
 
@@ -427,7 +427,7 @@ fn format_value[
     var exponent_threshold = print_options.exponent_threshold
 
     @parameter
-    if is_floattype[dtype]():
+    if dtype.is_floating_point():
         if isnan(value):
             return nan_string.ascii_rjust(formatted_width)
         if isinf(value):
@@ -480,7 +480,8 @@ fn format_value[
     var exponent_threshold = print_options.exponent_threshold
 
     var re_str: String
-    if cdtype.is_floating_point():
+    @parameter
+    if cdtype._dtype.is_floating_point():
         if isnan(value.re):
             re_str = nan_string
         elif isinf(value.re):
@@ -510,7 +511,8 @@ fn format_value[
     # Decide sign for imaginary component and format magnitude
     var imag_sign_char: String = "+"
     var imag_mag_str: String
-    if cdtype.is_floating_point():
+    @parameter
+    if cdtype._dtype.is_floating_point():
         if isnan(value.im):
             imag_mag_str = nan_string
             imag_sign_char = "+"
