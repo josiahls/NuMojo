@@ -16,7 +16,6 @@ from numojo.core.layout.ndstrides import NDArrayStrides
 from numojo.core.error import NumojoError
 
 
-@register_passable
 struct NDArrayShape(
     Equatable,
     ImplicitlyCopyable,
@@ -25,6 +24,7 @@ struct NDArrayShape(
     Sized,
     Stringable,
     Writable,
+    RegisterPassable
 ):
     """
     Presents the shape of `NDArray` type.

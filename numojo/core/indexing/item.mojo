@@ -25,7 +25,6 @@ from numojo.core.traits.indexer_collection_element import (
 )
 
 
-@register_passable
 struct Item(
     Equatable,
     ImplicitlyCopyable,
@@ -34,6 +33,7 @@ struct Item(
     Sized,
     Stringable,
     Writable,
+    RegisterPassable
 ):
     """
     Represents a multi-dimensional index for array access.
