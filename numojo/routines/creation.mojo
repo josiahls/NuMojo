@@ -1009,7 +1009,7 @@ fn empty[
 
 fn empty[
     dtype: DType = DType.float64
-](shape: VariadicList[Int]) raises -> NDArray[dtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> NDArray[dtype]:
     """
     Generate an empty NDArray from variadic integer arguments.
 
@@ -1085,7 +1085,7 @@ fn empty[
 
 fn empty[
     cdtype: ComplexDType = ComplexDType.float64,
-](shape: VariadicList[Int]) raises -> ComplexNDArray[cdtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> ComplexNDArray[cdtype]:
     """
     Generate an empty ComplexNDArray from variadic integer arguments.
 
@@ -1274,7 +1274,7 @@ fn ones[
 
 fn ones[
     dtype: DType = DType.float64
-](shape: VariadicList[Int]) raises -> NDArray[dtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> NDArray[dtype]:
     """
     Generate a NDArray filled with ones from variadic integer arguments.
 
@@ -1346,7 +1346,7 @@ fn ones[
 
 fn ones[
     cdtype: ComplexDType = ComplexDType.float64,
-](shape: VariadicList[Int]) raises -> ComplexNDArray[cdtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> ComplexNDArray[cdtype]:
     """
     Generate a ComplexNDArray filled with ones from variadic integer arguments.
 
@@ -1427,7 +1427,7 @@ fn zeros[
 
 fn zeros[
     dtype: DType = DType.float64
-](shape: VariadicList[Int]) raises -> NDArray[dtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> NDArray[dtype]:
     """
     Generate a NDArray filled with zeros from variadic integer arguments.
 
@@ -1499,7 +1499,7 @@ fn zeros[
 
 fn zeros[
     cdtype: ComplexDType = ComplexDType.float64,
-](shape: VariadicList[Int]) raises -> ComplexNDArray[cdtype]:
+](shape: VariadicList[Int, is_owned=False]) raises -> ComplexNDArray[cdtype]:
     """
     Generate a ComplexNDArray filled with zeros from variadic integer arguments.
 
@@ -1595,7 +1595,7 @@ fn full[
 fn full[
     dtype: DType = DType.float64
 ](
-    shape: VariadicList[Int], fill_value: Scalar[dtype], order: String = "C"
+    shape: VariadicList[Int, is_owned=False], fill_value: Scalar[dtype], order: String = "C"
 ) raises -> NDArray[dtype]:
     """
     Create a NDArray filled with a specified value from variadic integer arguments.
@@ -1703,7 +1703,7 @@ fn full[
 fn full[
     cdtype: ComplexDType = ComplexDType.float64
 ](
-    shape: VariadicList[Int],
+    shape: VariadicList[Int, is_owned=False],
     fill_value: ComplexSIMD[cdtype],
     order: String = "C",
 ) raises -> ComplexNDArray[cdtype]:
